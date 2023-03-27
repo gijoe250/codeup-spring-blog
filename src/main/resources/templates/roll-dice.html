@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Roll Dice</title>
-</head>
+<head th:replace="partials :: head" />
 <body>
+<nav th:replace="partials :: navbar" />
 <h1>Guess a number!</h1>
 
 <th:block th:each="i: ${#numbers.sequence(0, 6 - 1)}">
@@ -18,6 +16,6 @@
         <input type="submit" th:value="${i}+1" name="number" id="alexia">
     </form>
 </th:block>
-
 </body>
+<footer th:replace="partials :: footer" />
 </html>
