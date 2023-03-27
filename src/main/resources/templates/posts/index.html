@@ -5,6 +5,10 @@
     <title>Index</title>
 </head>
 <body>
-
+<div th:each="item : ${posts}">
+    <h1 th:text="${item.id}"></h1>
+    <h2 th:text="${item.title}"></h2>
+    <h3 th:text="${item.body}"></h3>
+</div>
 </body>
 </html>

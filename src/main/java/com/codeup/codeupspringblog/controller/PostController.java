@@ -1,23 +1,36 @@
 package com.codeup.codeupspringblog.controller;
 
+import com.codeup.codeupspringblog.model.Post;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class PostController {
     @RequestMapping(path = "/posts", method = RequestMethod.GET)
-    @ResponseBody
-    public String indexPage(){
-        return "posts index page";
+    public String indexPage(Model model){
+        Post post2 = new Post(2, "Test2", "This is the test2 post");
+        Post post3 = new Post(3, "Test3", "This is the test3 post");
+
+        List<Post> posts = new ArrayList<>() {
+            {
+                add(post2);
+                add(post3);
+            }
+        };
+        model.addAttribute("posts", posts);
+
+        return "posts/index";
     }
 
     @RequestMapping(path = "/posts/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public String idPage(){
-        return "view an individual post";
+    public String idPage(@PathVariable int id, Model model){
+        Post post = new Post(id, "Test", "This is the test post");
+        model.addAttribute("post", post);
+        return "posts/show";
     }
 
     @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
