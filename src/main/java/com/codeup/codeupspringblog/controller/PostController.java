@@ -1,21 +1,24 @@
 package com.codeup.codeupspringblog.controller;
 
 import com.codeup.codeupspringblog.Dao.PostRepository;
+import com.codeup.codeupspringblog.Dao.UserRepository;
+import com.codeup.codeupspringblog.model.Ad;
 import com.codeup.codeupspringblog.model.Post;
+import com.codeup.codeupspringblog.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class PostController {
     private final PostRepository postDao;
+    private final UserRepository usersDao;
 
-    public PostController(PostRepository postDao) {
+    public PostController(PostRepository postDao, UserRepository usersDao) {
         this.postDao = postDao;
+        this.usersDao = usersDao;
     }
     @RequestMapping(path = "/posts", method = RequestMethod.GET)
     public String indexPage(Model model){
@@ -39,13 +42,17 @@ public class PostController {
 
     @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
     public String createPageGet(){
+        System.out.println("in post create get");
         return "posts/create";
     }
 
     @RequestMapping(path = "/posts/create", method = RequestMethod.POST)
     public String createPagePost(@RequestParam(name = "title") String title, @RequestParam(name = "description") String description, Model model){
-        Post post = new Post(title, description);
+        User user = usersDao.findById(1);
+        System.out.println(user.getId() + " posts");
+        Post post = new Post(title, description, user);
         postDao.save(post);
         return "redirect:/posts";
     }
+
 }
