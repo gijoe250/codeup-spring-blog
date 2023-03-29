@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PostController {
@@ -24,9 +25,16 @@ public class PostController {
 
     @RequestMapping(path = "/posts/{id}", method = RequestMethod.GET)
     public String idPage(@PathVariable int id, Model model){
-        model.addAttribute("post", postDao.findById(id).get());
-//        model.addAttribute("post", postDao.findPostById(id));
-        return "posts/show";
+//        Alexia = model.addAttribute("post", postDao.findById(id).get());
+//        Mine = model.addAttribute("post", postDao.findPostById(id));
+        Optional<Post> optionalPost = postDao.findById((id));
+        if (optionalPost.isPresent()){
+            model.addAttribute("post", optionalPost.get());
+            return "posts/show";
+        } else {
+            return "redirect:/posts";
+        }
+
     }
 
     @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
