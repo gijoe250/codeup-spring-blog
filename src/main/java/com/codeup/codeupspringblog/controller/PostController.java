@@ -39,29 +39,14 @@ public class PostController {
         }
     }
 
-//    @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
-//    public String createPageGet(){
-//        System.out.println("in post create get");
-//        return "posts/create";
-//    }
     @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
     public String createPageGet(Model model){
         model.addAttribute("post", new Post());
         return "posts/create";
     }
 
-//    @RequestMapping(path = "/posts/create", method = RequestMethod.POST)
-//    public String createPagePost(@RequestParam(name = "title") String title, @RequestParam(name = "description") String description, Model model){
-//        User user = usersDao.findById(1);
-//        System.out.println(user.getId() + " posts");
-//        Post post = new Post(title, description, user);
-//        postDao.save(post);
-//        return "redirect:/posts";
-//    }
-
     @RequestMapping(path = "/posts/create", method = RequestMethod.POST)
     public String createPagePost(@ModelAttribute Post post){
-        System.out.println("I am here");
         postDao.save(post);
         return "redirect:/posts";
     }
