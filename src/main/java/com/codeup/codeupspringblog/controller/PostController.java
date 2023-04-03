@@ -37,20 +37,49 @@ public class PostController {
         } else {
             return "redirect:/posts";
         }
-
     }
 
+//    @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
+//    public String createPageGet(){
+//        System.out.println("in post create get");
+//        return "posts/create";
+//    }
     @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
-    public String createPageGet(){
-        System.out.println("in post create get");
+    public String createPageGet(Model model){
+        model.addAttribute("post", new Post());
         return "posts/create";
     }
 
+//    @RequestMapping(path = "/posts/create", method = RequestMethod.POST)
+//    public String createPagePost(@RequestParam(name = "title") String title, @RequestParam(name = "description") String description, Model model){
+//        User user = usersDao.findById(1);
+//        System.out.println(user.getId() + " posts");
+//        Post post = new Post(title, description, user);
+//        postDao.save(post);
+//        return "redirect:/posts";
+//    }
+
     @RequestMapping(path = "/posts/create", method = RequestMethod.POST)
-    public String createPagePost(@RequestParam(name = "title") String title, @RequestParam(name = "description") String description, Model model){
-        User user = usersDao.findById(1);
-        System.out.println(user.getId() + " posts");
-        Post post = new Post(title, description, user);
+    public String createPagePost(@ModelAttribute Post post){
+        System.out.println("I am here");
+        postDao.save(post);
+        return "redirect:/posts";
+    }
+
+    @GetMapping("/posts/{id}/edit")
+    public String editPostGet(Model model, @PathVariable int id){
+        Optional<Post> optionalPost = postDao.findById((id));
+        if (optionalPost.isPresent()){
+            model.addAttribute("post", optionalPost.get());
+            return "posts/edit";
+        } else {
+            System.out.println("id does not exist");
+            return "redirect:/posts";
+        }
+    }
+
+    @PostMapping("/posts/{id}/edit")
+    public String editPostPost(@ModelAttribute Post post){
         postDao.save(post);
         return "redirect:/posts";
     }
