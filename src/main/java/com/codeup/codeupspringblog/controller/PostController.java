@@ -5,6 +5,7 @@ import com.codeup.codeupspringblog.Dao.UserRepository;
 import com.codeup.codeupspringblog.model.Ad;
 import com.codeup.codeupspringblog.model.Post;
 import com.codeup.codeupspringblog.model.User;
+import com.codeup.codeupspringblog.services.EmailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +16,12 @@ import java.util.Optional;
 public class PostController {
     private final PostRepository postDao;
     private final UserRepository usersDao;
+    private final EmailService emailService;
 
-    public PostController(PostRepository postDao, UserRepository usersDao) {
+    public PostController(PostRepository postDao, UserRepository usersDao, EmailService emailService) {
         this.postDao = postDao;
         this.usersDao = usersDao;
+        this.emailService = emailService;
     }
     @RequestMapping(path = "/posts", method = RequestMethod.GET)
     public String indexPage(Model model){
@@ -47,7 +50,10 @@ public class PostController {
 
     @RequestMapping(path = "/posts/create", method = RequestMethod.POST)
     public String createPagePost(@ModelAttribute Post post){
+        User user = usersDao.findById(1);
+        post.setUser(user);
         postDao.save(post);
+        emailService.prepareAndSend( post,"test", "this is the body of the email?");
         return "redirect:/posts";
     }
 
@@ -68,5 +74,4 @@ public class PostController {
         postDao.save(post);
         return "redirect:/posts";
     }
-
 }
