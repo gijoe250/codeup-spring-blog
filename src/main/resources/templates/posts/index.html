@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
+    <link th:replace="partials/links :: bootstrap">
 </head>
 <body>
+<nav th:replace="partials/navbar :: navbar" />
 <div th:each="item : ${posts}">
     <h1 th:text="${item.id}"></h1>
     <h2 th:text="${item.title}"></h2>

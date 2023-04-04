@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Create an Ad</title>
+  <link th:replace="partials/links :: bootstrap">
 </head>
 <body>
+<nav th:replace="partials/navbar :: navbar" />
 <fieldset>
   <legend>Create an Ad</legend>
   <form action="/ads/create" method="post">

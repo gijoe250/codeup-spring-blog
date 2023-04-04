@@ -1,9 +1,9 @@
 package com.codeup.codeupspringblog.controller;
 
-import com.codeup.codeupspringblog.Dao.AdRepository;
-import com.codeup.codeupspringblog.Dao.UserRepository;
+import com.codeup.codeupspringblog.repositories.UserRepository;
 import com.codeup.codeupspringblog.model.Ad;
 import com.codeup.codeupspringblog.model.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +13,25 @@ import java.util.List;
 @Controller
 public class UserController {
     private final UserRepository usersDao;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository usersDao) {
-        this.usersDao = usersDao;
+    public UserController(UserRepository userDao, PasswordEncoder passwordEncoder) {
+        this.usersDao = userDao;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @GetMapping("/sign-up")
+    public String showSignupForm(Model model){
+        model.addAttribute("user", new User());
+        return "users/sign-up";
+    }
+
+    @PostMapping("/sign-up")
+    public String saveUser(@ModelAttribute User user){
+        String hash = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hash);
+        usersDao.save(user);
+        return "redirect:/login";
     }
 
     @PostMapping("/register")

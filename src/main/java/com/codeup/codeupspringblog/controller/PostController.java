@@ -1,11 +1,11 @@
 package com.codeup.codeupspringblog.controller;
 
-import com.codeup.codeupspringblog.Dao.PostRepository;
-import com.codeup.codeupspringblog.Dao.UserRepository;
-import com.codeup.codeupspringblog.model.Ad;
+import com.codeup.codeupspringblog.repositories.PostRepository;
+import com.codeup.codeupspringblog.repositories.UserRepository;
 import com.codeup.codeupspringblog.model.Post;
 import com.codeup.codeupspringblog.model.User;
 import com.codeup.codeupspringblog.services.EmailService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -50,8 +50,10 @@ public class PostController {
 
     @RequestMapping(path = "/posts/create", method = RequestMethod.POST)
     public String createPagePost(@ModelAttribute Post post){
-        User user = usersDao.findById(1);
-        post.setUser(user);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userCopy = new User(user);
+
+        post.setUser(userCopy);
         postDao.save(post);
         emailService.prepareAndSend( post,"test", "this is the body of the email?");
         return "redirect:/posts";

@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>All the Ads</title>
+  <link th:replace="partials/links :: bootstrap" />
 </head>
 <body>
+<nav th:replace="partials/navbar :: navbar">
 <h1>Here are all the ads:</h1>
 <ul>
   <li th:each="ad : ${ads}">

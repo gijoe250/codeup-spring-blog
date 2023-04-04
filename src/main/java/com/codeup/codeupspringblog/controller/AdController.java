@@ -1,11 +1,9 @@
 package com.codeup.codeupspringblog.controller;
 
-import com.codeup.codeupspringblog.Dao.AdRepository;
-import com.codeup.codeupspringblog.Dao.UserRepository;
+import com.codeup.codeupspringblog.repositories.AdRepository;
+import com.codeup.codeupspringblog.repositories.UserRepository;
 import com.codeup.codeupspringblog.model.Ad;
-import com.codeup.codeupspringblog.model.Post;
 import com.codeup.codeupspringblog.model.User;
-import com.codeup.codeupspringblog.services.EmailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
